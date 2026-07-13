@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About" description="About Genome Insider.">
+  <section class="wrap about-page">
+    <span class="eyebrow">About</span>
+    <h1 class="about-title">About Genome Insider</h1>
+
+    <div class="prose about-body">
+      <p>
+        Genome Insider is a collection of explanations, notes, and explorations at the
+        intersection of biology, computation, and medicine.
+      </p>
+
+      <p>
+        Created by <strong><a href="#tanaya">Tanaya Datar</a></strong>, this platform explores bioinformatics,
+        molecular biology, immunology, and computational approaches to understanding complex
+        biological systems.
+      </p>
+
+      <p>
+      Genome Insider was designed and built by me using Astro and is deployed with Vercel. The goal was to create a clean, fast, and distraction-free space for exploring biology, genomics, and computational science.
+      </p>
+      
+      <h2 id="tanaya" class="author-title">About the Author</h2>
+      <p>
+        Tanaya is a computational cancer researcher, with a passion for algorithms, data-driven
+        discovery, and decoding the complexity of biological systems through code. Outside of
+        coding, she enjoys writing articles about science and watching sitcoms. Tanaya aspires
+        to revolutionize cancer treatment and become the CEO of a biopharmaceutical company one day.
+      </p>
+
+      <div class="social-links">
+        <a 
+          href="https://www.linkedin.com/in/tanaya-datar-7484b62b5/" 
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          💼 LinkedIn
+        </a>
+
+        <a 
+          href="https://github.com/tanaya2026" 
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          💻 GitHub
+        </a>
+      </div>
+
+       <h2 id="tanaya" class="author-title"></h2>
+
+    </div>
+
+    <hr class="rule" />
+
+    <div class="about-cta">
+      <a href="/articles" class="btn">Read the articles</a>
+      <a href="/contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: 720px;
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .about-title {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    margin: 0.3rem 0 1.75rem;
+  }
+
+  .about-body p:first-child {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+
+  #tanaya {
+    scroll-margin-top: 100px;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .social-links a {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .social-links a:hover {
+    text-decoration: underline;
+  }
+
+  .about-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

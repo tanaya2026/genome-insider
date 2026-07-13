@@ -1,0 +1,111 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/articles', label: 'Articles' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="/" class="wordmark">
+      <span class="wordmark-glyph">GI</span>
+      <span class="wordmark-text">Genome Insider</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={currentPath === item.href ? 'page' : undefined}
+              class:list={['nav-link', { active: currentPath === item.href }]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <ThemeToggle />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .wordmark-glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  .site-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.75rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    padding-bottom: 0.2rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-text);
+    border-bottom-color: var(--color-clay);
+  }
+
+  @media (max-width: 640px) {
+    .wordmark-text { display: none; }
+    .site-nav ul { gap: 1.1rem; }
+  }
+</style>

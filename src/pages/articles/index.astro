@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { CATEGORIES } from '../../content/config';
+
+const allArticles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const slugify = (s: string) => s.toLowerCase().replace(/\s+/g, '-');
+---
+
+<BaseLayout title="Articles" description="Browse every Genome Insider article, from bioinformatics to cancer biology.">
+  <section class="section wrap">
+    <span class="eyebrow">Archive</span>
+    <h1 class="page-title">Articles</h1>
+    <p class="page-intro">Explanations, notes, and explorations across computational biology.</p>
+
+    <div class="filters">
+      <a href="/articles" class="chip active">All</a>
+      {CATEGORIES.map((c) => (
+        <a href={`/articles/${slugify(c)}`} class="chip">{c}</a>
+      ))}
+    </div>
+
+    <div class="article-grid">
+      {allArticles.map((article) => (
+        <ArticleCard
+          title={article.data.title}
+          description={article.data.description}
+          categories={article.data.categories}
+          readingTime={article.data.readingTime}
+          slug={article.slug}
+        />
+      ))}
+    </div>
+
+    {allArticles.length === 0 && (
+      <p class="empty-note">No articles published yet. Add MDX files under <code>src/content/articles/</code>.</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .section { padding-block: clamp(2.5rem, 5vw, 4rem); }
+  .page-title { font-size: clamp(2.2rem, 5vw, 3rem); margin: 0.3rem 0 0.6rem; }
+  .page-intro { color: var(--color-text-muted); max-width: 46ch; margin-bottom: 2rem; }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chip {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .chip:hover { border-color: var(--color-accent); color: var(--color-text); }
+
+  .chip.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg) !important;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .empty-note { color: var(--color-text-muted); }
+  .empty-note code {
+    background: var(--color-code-bg);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (max-width: 900px) {
+    .article-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 620px) {
+    .article-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { CATEGORIES } from '../../../content/config';
+
+export async function getStaticPaths() {
+  return CATEGORIES.map((category) => ({
+    params: { category: category.toLowerCase().replace(/\s+/g, '-') },
+    props: { category }
+  }));
+}
+
+const { category } = Astro.props;
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft && data.categories.includes(category))).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const slugify = (s: string) => s.toLowerCase().replace(/\s+/g, '-');
+---
+
+<BaseLayout title={category} description={`Genome Insider articles on ${category}.`}>
+  <section class="section wrap">
+    <span class="eyebrow">Category</span>
+    <h1 class="page-title">{category}</h1>
+
+    <div class="filters">
+      <a href="/articles" class="chip">All</a>
+      {CATEGORIES.map((c) => (
+        <a href={`/articles/${slugify(c)}`} class:list={['chip', { active: c === category }]}>{c}</a>
+      ))}
+    </div>
+
+    <div class="article-grid">
+      {articles.map((article) => (
+        <ArticleCard
+          title={article.data.title}
+          description={article.data.description}
+          categories={article.data.categories}
+          readingTime={article.data.readingTime}
+          slug={article.slug}
+        />
+      ))}
+    </div>
+
+    {articles.length === 0 && (
+      <p class="empty-note">No {category} articles published yet. Add one under <code>src/content/articles/</code>.</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .section { padding-block: clamp(2.5rem, 5vw, 4rem); }
+  .page-title { font-size: clamp(2.2rem, 5vw, 3rem); margin: 0.3rem 0 1.5rem; }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chip {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .chip:hover { border-color: var(--color-accent); color: var(--color-text); }
+
+  .chip.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg) !important;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .empty-note { color: var(--color-text-muted); }
+  .empty-note code {
+    background: var(--color-code-bg);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (max-width: 900px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .article-grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,49 @@
+---
+interface Props {
+  emoji: string;
+  name: string;
+  href: string;
+  count?: number;
+}
+
+const { emoji, name, href, count } = Astro.props;
+---
+
+<a href={href} class="topic-card">
+  <span class="topic-emoji" aria-hidden="true">{emoji}</span>
+  <span class="topic-name">{name}</span>
+  {typeof count === 'number' && <span class="topic-count">{count} articles</span>}
+</a>
+
+<style>
+  .topic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-elevated);
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+
+  .topic-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-accent);
+  }
+
+  .topic-emoji { font-size: 1.9rem; }
+
+  .topic-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+
+  .topic-count {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,267 @@
+/* ==========================================================================
+   Genome Insider — Design Tokens
+   Nature journal + computational biology notebook + modern editorial site
+   ========================================================================== */
+
+:root {
+  /* Light mode palette */
+  --color-bg: #F8F5EE;
+  --color-bg-elevated: #FFFFFF;
+  --color-text: #242424;
+  --color-text-muted: #5C5A54;
+  --color-accent: #496B4A;      /* forest green */
+  --color-accent-soft: #E4E8DF;
+  --color-clay: #B56B45;         /* clay */
+  --color-border: #DEDACD;
+  --color-code-bg: #EFEAE0;
+
+  /* Type */
+  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Rhythm */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --max-width: 1180px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  --color-bg: #121713;
+  --color-bg-elevated: #182019;
+  --color-text: #E8E3D8;
+  --color-text-muted: #A8A498;
+  --color-accent: #91A889;      /* sage green */
+  --color-accent-soft: #24302A;
+  --color-clay: #C98860;
+  --color-border: #2B342D;
+  --color-code-bg: #1C2620;
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------- Reset -------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+img { max-width: 100%; display: block; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-text);
+  margin: 0 0 0.5em;
+}
+
+p { margin: 0 0 1.25em; }
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg-elevated);
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-clay);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------------------------------- Layout ------------------------------- */
+
+.wrap {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.rule {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2.5rem 0;
+}
+
+/* ---------------------------------- Buttons ------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-bg) !important;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: var(--color-clay);
+  border-color: var(--color-clay);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border);
+}
+
+.btn-ghost:hover {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-text) !important;
+}
+
+/* ---------------------------------- Prose (article body) ----------------- */
+
+.prose {
+  font-size: 1.08rem;
+  color: var(--color-text);
+}
+
+.prose h2 {
+  font-size: 1.7rem;
+  margin-top: 2.4em;
+  padding-top: 0.2em;
+  border-top: 1px solid var(--color-border);
+}
+
+.prose h2:first-child {
+  border-top: none;
+  margin-top: 0;
+}
+
+.prose h3 {
+  font-size: 1.3rem;
+  margin-top: 1.8em;
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.4em;
+}
+
+.prose li { margin-bottom: 0.5em; }
+
+.prose blockquote {
+  margin: 1.5em 0;
+  padding: 0.2em 1.4em;
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.prose code {
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  font-size: 0.88em;
+  background: var(--color-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+.prose pre {
+  border-radius: var(--radius-md);
+  padding: 1.1em 1.3em;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  font-size: 0.88em;
+  line-height: 1.6;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose figure {
+  margin: 2em 0;
+}
+
+.prose figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 0.6em;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.92rem;
+}
+
+.prose th, .prose td {
+  border: 1px solid var(--color-border);
+  padding: 0.6em 0.8em;
+  text-align: left;
+}
+
+.prose th {
+  font-family: var(--font-body);
+  font-weight: 600;
+  background: var(--color-accent-soft);
+}
+
+/* Key Takeaways checklist */
+.prose .takeaways li::marker { content: ''; }
+.prose .takeaways li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.7em;
+}
+.prose .takeaways li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}

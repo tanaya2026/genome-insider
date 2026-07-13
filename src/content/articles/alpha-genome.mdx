@@ -1,0 +1,68 @@
+---
+title: "Can AI models learn the Language of our DNA? Inside AlphaGenome"
+description: "How deep learning models are learning the hidden rules of the genome and predicting the impact of genetic variation."
+categories: 
+- "AI and ML"
+- "Genomics"
+- "Bioinformatics"
+difficulty: "Advanced"
+readingTime: 10
+pubDate: 2026-07-1
+featured: true
+---
+# Introduction
+
+The genome contains the instructions required to build and maintain life, but understanding how those instructions are interpreted remains one of the biggest challenges in modern biology. While sequencing technologies have allowed us to read DNA at unprecedented scale, the sequence alone does not tell us how genes are regulated, when they are activated, or how genetic changes influence biological outcomes. <strong>Much of this information is encoded within the regulatory genome, regions of DNA that control gene expression and cellular function.</strong>
+
+Recent advances in artificial intelligence have opened new opportunities to decode this hidden layer of genomic information. By learning patterns directly from large-scale experimental datasets, <strong>deep learning models are beginning to predict how DNA sequences influence molecular processes.</strong> These approaches have the potential to accelerate our understanding of genetic variation, improve disease variant interpretation, and provide new insights into human biology.
+
+<strong>Sequence-to-function models</strong>, a class of computational frameworks, can learn patterns from experimental data and predict variant effects. This class takes a DNA sequence as input and predicts genome tracks, a data format that assigns a value to each DNA base pair, reflecting read coverage, counts, or signals measured from experimental assays conducted in cell lines or tissues. By comparing genome track predictions from an alternative or perturbed sequence to a reference sequence, high-performing sequence-to-function models can predict the transcriptional effects of variants, effectively performing <strong>in silico genetic perturbations.</strong>
+
+Some state-of-the-art sequence-to-function models include <strong>AlphaGenome, Borzoi, DeepSEA, and Enformer.</strong> Using these algorithms, researchers can explore fundamental questions about how DNA encodes biological information and how genetic variation influences cellular function.
+
+# State-of-the-art models: AlphaGenome and Borzoi
+
+AlphaGenome and Borzoi are groundbreaking sequence-to-model frameworks designed to predict the effect of genetic variants with tissue-specific precision. Borzoi, developed by Calico Life Sciences in 2023, was trained to predict cell-type and tissue-type specific RNA-seq expression directly from DNA sequences. It demonstrated strong performance, outperforming other state-of-art predictive models. 
+However, in 2025, Google’s DeepMind introduced AlphaGenome, which surpassed all other predictive models, including Borzoi, in predictive accuracy.  
+
+Sequence-to-function models, often due to computational limitations, face a trade-off between modelling long-range genomic interactions while maintaining precise nucleotide-level predictions. Tools like <strong>SpliceAI5</strong> and <strong>ProCapNet8</strong>, although capable of providing base pair resolution, are limited to short input sequence lengths (< 10kb), which leads to <strong>models losing out on the influence of regulatory elements which are further away</strong>. For example, some enhancer regions can be several hundred kilobases away from its target gene. Hence, such models fail to account for the influence of these distal acting regulatory elements.
+
+In contrast, tools like <strong>Borzoi</strong> and <strong>Enformer</strong>, although capable of processing longer input sequences 
+(> 200kb), can only provide low resolution up to 32 bp and 128 bp respectively, <strong>which can mask fine regulatory features like polyadenylation sites and splice sites.</strong> For example, the 5’ splice site region spans only 11 nucleotides, and hence, such models fail to pinpoint these functional elements.
+
+The AlphaGenome model, however, <strong>takes 1 Mb (1000 kb) of DNA sequence as input</strong>, and can therefore capture the effects of the distal regulatory elements, such as enhancers, which was not accounted for by previous models. Additionally, <strong>it supports base-pair resolution for the entire 1 Mb of input</strong>, and hence can capture the splice sites that are only a few base pairs long. Therefore, AlphaGenome’s capacity to model both distal regulatory effects and base-pair level features allows it to outperform prior models.
+
+AlphaGenome is capable of predicting up to 5930 human and 1128 mouse genome tracks across 11 distinct biological modalities, for e.g. RNA-seq, CAGE, PRO-cap, DNase, ATAC-seq, histone modifications, TF binding, etc., that can span various tissue types, cell lines and cell types. Moreover, AlphaGenome has matched or outcompeted the other state-of-the-art models on 24 out of 26 evaluations on the prediction of variant effects. For example, in one evaluation, AlphaGenome achieved a <strong>+17.4%</strong> relative improvement compared to Borzoi in predicting cell type-specific gene-level expression log fold changes.
+
+# Why does this matter?
+
+Together, these advances represent a shift in how we study the genome. Rather than analyzing individual regulatory elements in isolation, models like AlphaGenome provide a framework for understanding how complex combinations of genetic features work together to influence cellular function. By enabling more accurate predictions of how variants alter gene regulation, these models could accelerate research in areas such as disease variant interpretation, precision medicine, and therapeutic discovery.
+
+However, predicting genomic function remains an ongoing challenge. While models like AlphaGenome and Borzoi demonstrate remarkable improvements, their predictions are ultimately learned from existing experimental data and <strong>must continue to be validated through biological experiments.</strong> The future of genomic AI will likely depend not only on improving model architectures, but also on integrating these predictions with experimental biology to uncover the principles governing the genome.
+
+# References
+1. Dinçaslan, F. B., Ngang, S. W. Y., Tan, R. Z. & Cheow, L. F. Automated high-throughput profiling of single-cell total transcriptome with scComplete-seq. Nucleic Acids Research 53, (2025).
+
+2. Makrythanasis, P. & Antonarakis, S. E. High-Throughput sequencing and rare genetic diseases. Molecular Syndromology 3, 197–203 (2012).
+
+3. Miura, H., Gurumurthy, C. B., Sato, T., Sato, M. & Ohtsuka, M. CRISPR/Cas9-based generation of knockdown mice by intronic insertion of artificial microRNA using longer single-stranded DNA. Scientific Reports 5, (2015).
+
+4. Liu, X. et al. Evaluating foundation Models for In-Silico Perturbation. bioRxiv (Cold Spring Harbor Laboratory) (2025) doi:10.1101/2025.05.11.653338.
+
+5. Avsec, Ž. et al. AlphaGenome: advancing regulatory variant effect prediction with a unified DNA sequence model. bioRxiv (Cold Spring Harbor Laboratory) (2025) doi:10.1101/2025.06.25.661532.
+
+6. Linder, J., Srivastava, D., Yuan, H., Agarwal, V. & Kelley, D. R. Predicting RNA-seq coverage from DNA sequence as a unifying model of gene regulation. Nature Genetics (2025) doi:10.1038/s41588-024-02053-6.
+
+7. Zhou, J. & Troyanskaya, O. G. Predicting effects of noncoding variants with deep learning–based sequence model. Nature Methods 12, 931–934 (2015).
+
+8. Sun, C. et al. A comprehensive benchmark and guide for sequence-function interpretable deep learning models in genomics. bioRxiv (Cold Spring Harbor Laboratory) (2025) doi:10.1101/2025.01.06.631405.
+
+9. Avsec, Ž. et al. Effective gene expression prediction from sequence by integrating long-range interactions. Nature Methods 18, 1196–1203 (2021).
+
+10. Tang, L. RNA-seq coverage prediction. Nature Methods 22, 225 (2025).
+
+11. Callaway, E. DeepMind’s new AlphaGenome AI tackles the ‘dark matter’ in our DNA. Nature (2025) doi:10.1038/d41586-025-01998-w.
+
+12. Karnuta, J. M. & Scacheri, P. C. Enhancers: bridging the gap between gene control and human disease. Human Molecular Genetics 27, R219–R227 (2018).
+
+13. Roca, X. et al. Widespread recognition of 5′ splice sites by noncanonical base-pairing to U1 snRNA involving bulged nucleotides. Genes & Development 26, 1098–1109 (2012).

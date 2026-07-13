@@ -1,0 +1,164 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article }
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+const { title, description, categories, difficulty, tools, readingTime, pubDate, updatedDate } = article.data;
+
+const dateFmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const slugify = (s: string) => s.toLowerCase().replace(/\s+/g, '-');
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="wrap article-page">
+  <header class="article-header">
+  <div class="categories">
+    {categories.map((category) => (
+      <a href={`/articles/${slugify(category)}`} class="eyebrow category-link">
+        {category}
+      </a>
+    ))}
+  </div>
+
+  <h1 class="article-title">{title}</h1>
+  <p class="article-desc">{description}</p>
+  <p class="article-date">
+    Published {dateFmt(pubDate)}
+    {updatedDate && ` · Updated ${dateFmt(updatedDate)}`}
+  </p>
+</header>
+
+
+    <div class="article-layout">
+      <aside class="meta-panel">
+        <div class="meta-item">
+        <span class="meta-label">Topics</span>
+        <span class="meta-value">{categories.join(', ')}</span>
+      </div>
+      
+        <div class="meta-item">
+          <span class="meta-label">Difficulty</span>
+          <span class="meta-value">{difficulty}</span>
+        </div>
+        {tools.length > 0 && (
+          <div class="meta-item">
+            <span class="meta-label">Tools</span>
+            <span class="meta-value">{tools.join(', ')}</span>
+          </div>
+        )}
+        <div class="meta-item">
+          <span class="meta-label">Reading time</span>
+          <span class="meta-value">{readingTime} minutes</span>
+        </div>
+      </aside>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+
+    <hr class="rule" />
+    <footer class="article-footer">
+      <a href="/articles" class="btn btn-ghost">← Back to all articles</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    max-width: 900px;
+  }
+
+  .article-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .category-link {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 0 0 0.6rem;
+    line-height: 1.1;
+  }
+
+  .article-desc {
+    font-size: 1.15rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-text-muted);
+    margin-bottom: 0.8rem;
+  }
+
+  .article-date {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+  }
+
+  .meta-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.4rem;
+    height: fit-content;
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .meta-value {
+    font-size: 0.92rem;
+  }
+
+  .article-footer {
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 760px) {
+    .article-layout { grid-template-columns: 1fr; }
+    .meta-panel {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.5rem 2rem;
+    }
+  }
+</style>
