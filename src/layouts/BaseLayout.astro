@@ -43,8 +43,7 @@ const pageTitle = title === 'Genome Insider' ? title : `${title} · Genome Insid
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('gi-theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored || (prefersDark ? 'dark' : 'light');
+        const theme = stored || 'dark';
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
